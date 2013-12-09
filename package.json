@@ -1,0 +1,19 @@
+{
+  "name": "grunt-remove-plus-remove-empty",
+  "version": "0.1.0",
+  "description": "Grunt task to remove files and folders. Optionally removes empty folders",
+  "author": {
+    "name": "Osvaldo Lopez",
+    "email": "osvaldo.lopez@superluminal.me"
+  },
+  "license" : "MIT",
+  "keywords": [
+    "gruntplugin"
+  ],
+  "homepage": "https://github.com/neoncrisis/grunt-remove-plus-remove-empty",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/neoncrisis/grunt-remove-plus-remove-empty.git"
+  },
+  "bugs": "https://github.com/neoncrisis/grunt-remove-plus-remove-empty/issues"
+}
