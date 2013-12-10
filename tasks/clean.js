@@ -7,15 +7,16 @@ module.exports = function(grunt) {
 
 	// Remove a single filepath
 	function removeSingle(filepath, options) {
-		if (grunt.file.exists(filepath) && // path exists
-		    !grunt.file.isDir(filepath) || // is file
-		    (options['delete-empty-folders'] && !fs.readdirSync(filepath).length) // is empty folder
+		if (grunt.file.exists(filepath) &&
+			(!grunt.file.isDir(filepath) ||
+			(options['delete-empty-folders'] && !fs.readdirSync(filepath).length))
 		) { return grunt.file.delete(filepath, options); }
+
 		return false;
 	}
 
 	// Remove up the directory tree as far as possible
-	function removeBubble(filepath, options) {
+	function remove(filepath, options) {
 		while (removeSingle(filepath, options)) {
 			grunt.log.write((options['no-write'] ? 'Would remove ' : 'Removed ') + filepath + ' ... ');
 			grunt.log.ok();
@@ -35,10 +36,10 @@ module.exports = function(grunt) {
 		this.filesSrc.forEach(function(filepath) {
 			if (grunt.file.isDir(filepath)) {
 				grunt.file.recurse(filepath, function(filepath) {
-					removeBubble(filepath, options);
+					remove(filepath, options);
 				});
 			} else {
-				removeBubble(filepath, options);
+				remove(filepath, options);
 			}
 		});
 	});
