@@ -4,25 +4,14 @@ var path = require('path'),
     fs   = require('fs');
 
 module.exports = function(grunt) {
-
-	// Remove a single filepath
-	function removeSingle(filepath, options) {
-		if (grunt.file.exists(filepath) &&
-			(!grunt.file.isDir(filepath) ||
-			(options['delete-empty-folders'] && !fs.readdirSync(filepath).length))
-		) { return grunt.file.delete(filepath, options); }
-
-		return false;
-	}
-
-	// Remove up the directory tree as far as possible
+	// Remove a single filepath (recursively)
 	function remove(filepath, options) {
-		while (removeSingle(filepath, options)) {
+		if (grunt.file.exists(filepath) && grunt.file.delete(filepath, options)) {
 			grunt.log.write((options['no-write'] ? 'Would remove ' : 'Removed ') + filepath + ' ... ');
 			grunt.log.ok();
-
-			filepath = path.dirname(filepath);
+			return true;
 		}
+		return false;
 	}
 
 	grunt.registerMultiTask('clean', 'Clean files and folders.', function() {
@@ -34,12 +23,12 @@ module.exports = function(grunt) {
 
 		// Attempt removal of all specified files
 		this.filesSrc.forEach(function(filepath) {
-			if (grunt.file.isDir(filepath)) {
-				grunt.file.recurse(filepath, function(filepath) {
+			if (remove(filepath, options) && options['delete-empty-folders']) {
+				filepath = path.dirname(filepath);
+				while (!fs.readdirSync(filepath).length) {
 					remove(filepath, options);
-				});
-			} else {
-				remove(filepath, options);
+					filepath = path.dirname(filepath);
+				}
 			}
 		});
 	});
