@@ -1,6 +1,6 @@
 {
   "name": "grunt-remove-plus-remove-empty",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Grunt task to remove files and folders. Optionally removes empty folders",
   "author": {
     "name": "Osvaldo Lopez",
